@@ -1,0 +1,35 @@
+Author: Stefan Klinger (www.stefan-klinger.de)
+License: GNU General Public License Version 3
+
+
+
+Synopsis
+--------
+
+Currently there's only one script:
+
+  * `scrubMetadataOnExport.lua`
+
+    This script extends darktables "export selected" module with a
+    target storage option "scrub metadata".  This serves as an example
+    of how to automatically run external programs on exported images.
+    You should adapt it to your own use case.
+
+
+Installation
+------------
+
+    dtConfigDir="${HOME}/.config/darktable"
+    luaScripts="${dtConfigDir}/lua"
+
+Copy, git-clone or symlink this directory *into* `$luaScripts`.  You
+may change the name of this directory from `dtscripts` to something
+else in order to omit conflicts.  Then require the desired scripts
+from `luarc`.
+
+Example:  From the directory of this README
+
+    $ rm -r "${luaScripts}/dtscripts"  # check twice!
+    $ ln -s "$(realpath .)" "${luaScripts}/dtscripts"
+    $ echo "require('dtscripts/scrubMetadataOnExport')" \
+      >> "${dtConfigDir}/luarc"
