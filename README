@@ -2,11 +2,10 @@ Author: Stefan Klinger (www.stefan-klinger.de)
 License: GNU General Public License Version 3
 
 
-
 Synopsis
 --------
 
-Currently there's only one script:
+A collection of experimental scripts and examples.
 
   * `scrubMetadataOnExport.lua`
 
@@ -14,6 +13,11 @@ Currently there's only one script:
     target storage option "scrub metadata".  This serves as an example
     of how to automatically run external programs on exported images.
     You should adapt it to your own use case.
+
+  * `myExportProcess.lua`
+
+    A slightly more elaborate version of the above.  That's what I
+    actually use.
 
 
 Installation

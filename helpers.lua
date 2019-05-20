@@ -71,4 +71,14 @@ end
 
 
 
+-- Print all fields of a table to stdout.
+
+h.printAllFields = function(name, t)
+    for k, v in pairs(t) do
+        print(name .. '.' .. k, type(v), v)
+    end
+end
+
+
+
 return h
