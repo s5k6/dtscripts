@@ -11,7 +11,7 @@
 
     This implementation uses the tool `exiv2` [8].  Get it if you
     don't have it, or rewrite this script to use maybe `exiftool` [9].
-    
+
     Darktables's Lua API is poorly documented.  I've put links to the
     docs into this script where I find appropriate, but if that does
     not help you, ask the darktable devs on the mailing list.  See [5]
@@ -59,9 +59,9 @@ local exportPathEntry = dt.new_widget("entry"){
 local initialize = function(storage, format, images, highQuality, extraData)
 
     --[[ Make copy of all GUI fields, in case they are changed by the
-        user while exporting. ]]    
+        user while exporting. ]]
     extraData.exportPath = exportPathEntry.text
-    
+
     -- check whether an export path is specified
     if extraData.exportPath == '' then
         print("No export path")
@@ -82,10 +82,10 @@ end
 --[[ This function will be called once for each exported image (see
     [3]).  One could invoke all kinds of external tools here.  The
     following implements three calls to `exiv2`, but you might just
-    call your own script and do the coding there.  Parameter
-    `filename` contains the file that was exported by darktable into a
-    temporary location.  We work on that, and if all commands are
-    successful the file is copied to the export path. ]]
+    call your own script and do the coding there.  This function's
+    parameter `filename` contains the path to file that was exported
+    by darktable, a temporary location.  We work on that, and if all
+    commands are successful the file is copied to the export path. ]]
 
 local process = function(
         storage, image, format, filename, number, total, highQuality,
@@ -96,15 +96,25 @@ local process = function(
         `image` printed to stdout. ]]
     --for k, v in pairs(image) do print('image.' .. k, type(v), v) end
 
-    -- a list of commands to run.
+    --[[ A list of commands to run. In general: Test your commands on
+        the command line before adding them here.  Don't forget to
+        restart darktable after changes to this script. ]]
     local commands = {
-        
-        -- clear all metadata
-        -- $ exiv2 rm "$filename"
+
+        -- clear all metadata: $ exiv2 rm "$filename"
         { 'exiv2', 'rm', filename },
 
-        --[[ explicitly set some metadata, takes data from `image`.
-            See above how to print what's available.  ]]
+        --[[ explicitly set some metadata, takes data from `image`,
+            see above how to print what's available.  The following
+            produces a command akin to:
+
+                $ exiv2 '-Mset Xmp.dc.creator "a creator"' \
+                        '-Mset Xmp.dc.publisher "a publisher"' \
+                        '-Mset Xmp.dc.rights "rights statement"' \
+                        image.jpg
+
+            See [10] for a list of lists of available metadata
+            tags. ]]
         { 'exiv2',
           '-Mset Xmp.dc.creator "' .. image.creator .. '"',
           '-Mset Xmp.dc.publisher "' .. image.publisher .. '"',
@@ -112,13 +122,12 @@ local process = function(
           filename
         },
 
-        -- print all metadata to stdout
-        -- $ exiv2 -pa "$filename"
+        -- print all metadata to stdout: $ exiv2 -pa "$filename"
         --{ 'exiv2', '-pa', filename },
-        
+
     }
 
-    -- run all commands, abort on error
+    -- run all commands, abort on first error
     for _, v in pairs(commands) do
         if not h.runCmd(v) then return false end
     end
@@ -135,7 +144,7 @@ dt.register_storage(
     "scrub_metadata_export",
     "scrub metadata",
     process, -- : function
-    nil, -- finalize : function] 
+    nil, -- finalize : function]
     nil, -- supported : function
     initialize, -- : function
     exportPathEntry
@@ -153,4 +162,5 @@ dt.register_storage(
     [7] https://stackoverflow.com/questions/9145432/load-lua-files-by-relative-path
     [8] http://www.exiv2.org
     [9] https://metacpan.org/pod/exiftool
+    [10] https://www.exiv2.org/metadata.html
 ]]
