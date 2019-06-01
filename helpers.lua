@@ -6,7 +6,8 @@
 
 
 
-local h = {}
+local h = {} -- module export
+
 
 
 --[[ Append all following arguments to the table given as first
@@ -67,6 +68,15 @@ end
 h.copyToDir = function(dst, src)
     -- FIXME: better use builtin function if available
     return h.runCmd{ 'cp', '-t', dst, src }
+end
+
+
+
+-- copy `src` to `dst`, which must be a file, not a directory
+
+h.copyTo = function(dst, src)
+    -- FIXME: better use builtin function if available
+    return h.runCmd{ 'cp', '-T', src, dst }
 end
 
 

@@ -23,17 +23,22 @@ A collection of experimental scripts and examples.
 Installation
 ------------
 
-    dtConfigDir="${HOME}/.config/darktable"
-    luaScripts="${dtConfigDir}/lua"
+    $ dtConfigDir="${HOME}/.config/darktable"
+    $ luaScripts="${dtConfigDir}/lua"
 
 Copy, git-clone or symlink this directory *into* `$luaScripts`.  You
 may change the name of this directory from `dtscripts` to something
-else in order to omit conflicts.  Then require the desired scripts
-from `luarc`.
+else in order to omit conflicts, see Note below.
 
 Example:  From the directory of this README
 
-    $ rm -r "${luaScripts}/dtscripts"  # check twice!
-    $ ln -s "$(realpath .)" "${luaScripts}/dtscripts"
-    $ echo "require('dtscripts/scrubMetadataOnExport')" \
-      >> "${dtConfigDir}/luarc"
+    $ ln -sT "$(realpath .)" "${luaScripts}/dtscripts"
+
+Then require the desired scripts from `luarc`.  The result might look
+like this:
+
+    $ cat "${dtConfigDir}/luarc"
+    require('dtscripts/scrubMetadataOnExport')
+
+Note: If you've named the symlink `${luaScripts}/foobar` instead,
+you'd have to `require('foobar/scrubMetadataOnExport')`.

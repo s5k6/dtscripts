@@ -32,9 +32,7 @@ local h = require(dirOfThisFile .. "/helpers")
 
 -- my default export path
 
-local defaultExportPath = table.concat{
-    os.getenv("HOME"), '/tmp/dt/export'
-}
+local defaultExportPath = os.getenv("HOME") .. '/tmp/dt/export'
 
 
 
@@ -110,12 +108,10 @@ local process = function(
     --[[ Run some external tools.  In general: Test your commands
         on the command line before adding them here.  Don't forget to
         restart darktable after changes to this script. ]]
-
     
     
     --[[ Clear all metadata: $ exiv2 rm "$filename" ]]
     if not h.runCmd{ 'exiv2', 'rm', filename } then return false end
-
 
 
     --[[ Add some metadata.  Only available fields will be added to
@@ -158,15 +154,29 @@ local process = function(
         if not h.runCmd(cmd) then return false end
     end
 
-
-
     -- Debug: Print all metadata to stdout.
     --h.runCmd{'exiv2', '-pa', filename}
 
-    
+    -- This point is only reached on success.
 
-    -- On success, copy the file to the target path
-    return h.copyToDir(extraData.exportPath, filename)
+    -- Copy the file to the target path, use title in the name if available.
+    if image.title and image.title ~= '' then
+        -- use image title as basis fore file name
+        local base, ext = filename:match('^.*/([^/]+)(%.[^./]*)$')
+        if not ext then
+            base = filename
+            ext = ''
+        end
+        return h.copyTo(
+            extraData.exportPath ..
+                '/' .. base .. '--' ..
+                image.title:gsub('[^%wäöüÄÖÜß]+', '_') ..
+                ext,
+            filename
+        )
+    else
+        return h.copyToDir(extraData.exportPath, filename)
+    end
 end
 
 
