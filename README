@@ -19,6 +19,11 @@ A collection of experimental scripts and examples.
     A slightly more elaborate version of the above.  That's what I
     actually use.
 
+  * `applyStyleOnImport.lua`
+
+    Registers one style which is automatically applied on all new
+    imports.
+
 
 Installation
 ------------
