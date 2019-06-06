@@ -119,12 +119,10 @@ local process = function(
         lists of available metadata tags. ]]
     
     local cmd = { 'exiv2' } -- Add arguments below.
-    local run = false -- Don't run if nothing is added.
     
     -- for the easy cases (only one non-empty string argument)
     local easy = function(dst, src)
         if src and src ~= '' then
-            run = true
             h.append(cmd, '-Mset ' .. dst .. ' "' .. src .. '"')
         end
     end
@@ -148,11 +146,9 @@ local process = function(
                      .. '/' ..  (image.filename or '') .. '"')
     end
     
-    -- Only run if anything was added
-    if run then
-        h.append(cmd, filename) -- Don't forget filename argument
-        if not h.runCmd(cmd) then return false end
-    end
+    h.append(cmd, filename) -- Don't forget filename argument
+
+    if not h.runCmd(cmd) then return false end
 
     -- Debug: Print all metadata to stdout.
     --h.runCmd{'exiv2', '-pa', filename}
