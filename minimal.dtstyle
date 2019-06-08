@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<darktable_style version="1.0"><info><name>minimal</name><description>disable basecurve</description></info><style><plugin><num>0</num><module>5</module><operation>basecurve</operation><op_params>gz20eJxjYICBBnsIHgXDCTChsZlQxCBxDgD37gMF</op_params><enabled>0</enabled><blendop_params>gz11eJxjYGBgkGAAgRNODGiAEV0AJ2iwh+CRyscOAAdeGQQ=</blendop_params><blendop_version>9</blendop_version><multi_priority>0</multi_priority><multi_name></multi_name><iop_order>23.000000</iop_order></plugin></style></darktable_style>

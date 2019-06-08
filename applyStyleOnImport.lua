@@ -1,22 +1,21 @@
 
---[[ I use this script to auto-apply a default style: The style
-    "minimal" only contains a switched-off basecurve.  This script is
-    loaded from `luarc` by:
+--[[ I use this script to disable "base curve" on imported images.  It
+    should be able to auto-apply any style on import.
+
+    To use, import the style `minimal.dtstyle` (switches off the
+    basecurve).  Then "require" this script from `luarc` by something
+    like
 
         require('dtscripts/applyStyleOnImport').use('minimal')
 
-    Note: This is a workaround until basecurve is disabled by default.
-    Also, You'll have to define the style "minimal", it's not included
-    here.
+    but read `README` to get the path right.  Then restart darktable.
+
+    This is a workaround until basecurve is disabled by default.
 ]]
 
 
 
--- See [1] for how to use a relative path in `require`.
-local dirOfThisFile = (...):match('^(.*)/[^/]*$')
-
 local dt = require('darktable')
-local h = require(dirOfThisFile .. '/helpers')
 
 
 
@@ -57,9 +56,3 @@ end
 
 
 return m
-
-
-
---[[ Notes
-    [1] https://stackoverflow.com/questions/9145432/load-lua-files-by-relative-path
-]]
